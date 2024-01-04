@@ -1,1 +1,1 @@
-# Spotify-song-genre-prediction
+# spotify-song-genre-prediction
