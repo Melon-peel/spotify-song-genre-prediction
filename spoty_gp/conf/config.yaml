@@ -11,3 +11,7 @@ params:
   random_state: 42
   max_depth: 15
   min_samples_leaf: 40
+
+mlflow_address:
+  host: "128.0.1.1"
+  port: "8080"

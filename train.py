@@ -19,8 +19,15 @@ class ModelParams:
 
 
 @dataclass
+class MlFlowAddress:
+    host: str
+    port: str
+
+
+@dataclass
 class BaseConfig:
     params: ModelParams
+    mlflow_address: MlFlowAddress
 
 
 # cs = ConfigStore.instance()
@@ -93,9 +100,62 @@ def resolve_data_location(search_location, verbose):
         raise Exception("Parameter 'search' should be in {'local', 'remote'}")
 
 
-def main(search="local", verbose=True, use_old_hyperparams=True) -> None:
+def get_trained(X, y, use_old_hyperparams, verbose, cfg):
+    if use_old_hyperparams:
+        if verbose:
+            print("Training the model with existing hyperparameters...")
+        model = DecisionTreeClassifier(
+            random_state=cfg.params.random_state,
+            max_depth=cfg.params.max_depth,
+            min_samples_leaf=cfg.params.min_samples_leaf,
+        )
+    else:
+        raise Exception(
+            f"Case use_old_hyperparams={use_old_hyperparams} is not implemented. Use use_old_hyperparams=True insead"
+        )
+    model.fit(X, y)
+    return model
+
+
+def log_current_run(X, y, model, uri):
+    import mlflow
+    from mlflow.models import infer_signature
+
+    mlflow.set_tracking_uri(uri="http://127.0.0.1:8080")
+    mlflow.set_experiment("Training with optimal hyperparams")
+
+    # Start an MLflow run
+    with mlflow.start_run(run_name="Run with optimal hyperparams"):
+        # Log the hyperparameters
+        mlflow.log_params(model.get_params())
+
+        # Log the loss metric
+        mlflow.log_metric("accuracy", model.score(X, y))
+
+        # Infer the model signature
+        signature = infer_signature(X, model.predict(X))
+
+        # Log the model
+        mlflow.sklearn.log_model(
+            sk_model=model,
+            artifact_path="models/clf.skops",
+            signature=signature,
+            input_example=X,
+            registered_model_name="optimal-hyperparams",
+        )
+
+
+def main(
+    search="local",
+    verbose=True,
+    use_old_hyperparams=True,
+    logging=False,
+    log_uri="from_config",
+    host=None,
+    port=None,
+) -> None:
     """
-    Fuck
+    Epstein didn't kill himself
     """
 
     # init hydra config
@@ -116,28 +176,30 @@ def main(search="local", verbose=True, use_old_hyperparams=True) -> None:
     X = data_preproc.transform(X)
 
     # training
-    if use_old_hyperparams:
-        if verbose:
-            print("Training the model with existing hyperparameters...")
-        model = DecisionTreeClassifier(
-            random_state=cfg.params.random_state,
-            max_depth=cfg.params.max_depth,
-            min_samples_leaf=cfg.params.min_samples_leaf,
-        )
-    else:
-        raise Exception(
-            f"Case use_old_hyperparams={use_old_hyperparams} is not implemented. Use use_old_hyperparams=True insead"
-        )
-    model.fit(X, y)
+    model = get_trained(X, y, use_old_hyperparams, verbose, cfg)
 
-    # TODO: Добавить логгирование метрик
-    # metrics = None
-
-    # сохранение модели и метрик модели
+    # saving the model
     if verbose:
         print("Saving the model...")
     with open("models/dt_clf.skops", "wb") as model_f:
         sio.dump(model, model_f)
+
+    # logging
+    if logging:
+        if verbose:
+            print("Logging the run...")
+
+        if log_uri == "from_config":
+            host = cfg.mlflow_address.host
+            port = cfg.mlflow_address.port
+        elif log_uri == "custom":
+            pass
+        else:
+            raise Exception(
+                "Parameter `log_uri` should be from {'from_config', 'custom'}"
+            )
+
+        log_current_run(X, y, model=model, uri=f"http://{host}:{port}")
 
 
 if __name__ == "__main__":
