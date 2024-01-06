@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "spotify-song-genre-prediction"
+name = "spoty_gp"
 version = "0.1.0"
 description = "Genre prediction for a spotify song"
 authors = ["Nikita Kirillov <conv.lizzard@gmail.com>"]
