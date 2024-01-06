@@ -1,0 +1,5 @@
+outs:
+- md5: 1dacd5ccf8ce86283333e271b4f0285e
+  size: 23277093
+  hash: md5
+  path: dt_clf.skops
