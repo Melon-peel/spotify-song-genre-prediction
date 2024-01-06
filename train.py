@@ -30,33 +30,6 @@ class BaseConfig:
     mlflow_address: MlFlowAddress
 
 
-# cs = ConfigStore.instance()
-# cs.store(name="base_config", node=BaseConfig)
-
-
-# если через fire указали брать датасет из локальной репы, но его нет, завершить с ошибкой
-# если через fire указали брать датасет из ремоута - берём из ремоута
-# по умолчанию пробовать взять датасет из локальной репы
-
-# TODO: добавить проверку на наличие последней (!) версии датасета в локальной репе (fire case 1)
-
-
-# @hydra.main(version_base=None, config_path="spotify-song-genre-prediction/conf", config_name="config")
-# def _main(cfg: BaseConfig) -> None:
-# 	# загрузка датасета из dvc
-# 	print(cfg.params.random_state)
-
-# 	# for df_name in ["train", "test"]:
-# 	# 	with dvc.api.open(f"data/train_test/{df_name}.csv") as f:
-# 	# 		df = pd.read_csv(f)
-# 	# 		df.to_csv("data//train.csv", index=False)
-
-
-# 	# препроцессинг
-
-# 	# сохранение модели и метрик модели
-
-
 def resolve_data_location(search_location, verbose):
     data_dir = pathlib.Path("data/train_test/")
     if search_location == "local":
@@ -93,8 +66,11 @@ def resolve_data_location(search_location, verbose):
 
             if verbose:
                 print("Saving data to a local storage...")
-        train_df.to_csv(train_path, index_label="index", index=False)
-        test_df.to_csv(test_path, index_label="index", index=False)
+        train_df.to_csv(
+            train_path,
+            index_label="index",
+        )
+        test_df.to_csv(test_path, index_label="index")
         return train_df
     else:
         raise Exception("Parameter 'search' should be in {'local', 'remote'}")
