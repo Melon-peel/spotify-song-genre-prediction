@@ -122,7 +122,7 @@ def log_current_run(X, y, model, uri):
 
 
 def main(
-    search="local",
+    search="remote",
     verbose=True,
     use_old_hyperparams=True,
     logging=False,
