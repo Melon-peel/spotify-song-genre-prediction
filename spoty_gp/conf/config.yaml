@@ -1,0 +1,13 @@
+defaults:
+  - base_config
+  - _self_
+
+hydra:
+  output_subdir: null
+  run:
+    dir: .
+
+params:
+  random_state: 42
+  max_depth: 15
+  min_samples_leaf: 40
