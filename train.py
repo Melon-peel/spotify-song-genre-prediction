@@ -117,7 +117,7 @@ def log_current_run(X, y, model, uri):
             artifact_path="models/clf.skops",
             signature=signature,
             input_example=X,
-            registered_model_name="optimal-hyperparams",
+            registered_model_name="Decision tree model with optimal hyperparams",
         )
 
 
