@@ -1,13 +1,30 @@
 # spotify-song-genre-prediction
 
+
+## Навигация
+
+* [Описание проекта](#description)
+* [Установка](#installation)
+* [TL;DR](#tldr)
+* [Использование: обучение](#use_learning)
+  + [Базовый сценарий (без логирования)](#use_learning_base)
+  + [Запуск с логированием](#use_learning_logging)
+  + [Запуск с логированием по кастомному адресу mlflow](#use_learning_logging_custom)
+* [Использование: инференс](#use_infer)
+  + [Базовый сценарий](#use_infer_base)
+* [Настройка verbosity](#verbosity)
+
+---
+<a name='description'></a>
+## Описание проекта
+
 Задача данного проекта - предсказание жанра трека, используя информацию о
 соответствующих ему аудио-фичах.
 
 Аудио-фичи извлечены, используя Spotify API. Информация о жанрах извлечена из
 сервиса EveryNoise.
 
-### NOTE:
-
+**NOTE**:
 На данный момент качество модели отвратительное, в основном поскольку:
 
 - используемых признаков не хватает для адекватного предсказания (to be fixed)
@@ -16,7 +33,8 @@
 
 ---
 
-### Установка
+<a name='installation'></a>
+## Установка
 
 - `git clone https://github.com/Melon-peel/spotify-song-genre-prediction.git`
 - `python -m venv path/to/your/venv`
@@ -27,21 +45,26 @@
 
 ---
 
-### TL;DR
+<a name='tldr'></a>
+## TL;DR 
 
-#### Для запуска без логгирования:
+### Для запуска без логирования:
 
-`python train.py` `python infer.py`
+`python train.py` 
+`python infer.py`
 
-#### Для запуска с логгированием:
+### Для запуска с логированием:
 
-`python train.py --logging=True` `python infer.py`
+`python train.py --logging=True` 
+`python infer.py`
 
 ---
 
-### Использование: обучение
+<a name='use_learning'></a>
+## Использование: обучение
 
-#### Базовый сценарий (без логгирования)
+<a name='use_learning_base'></a>
+### Базовый сценарий (без логирования)
 
 `python train.py`:
 
@@ -52,13 +75,14 @@
 
 - для переобучения модели со своими данными используйте флаг `--search=local`
 
-#### Запуск с логгированием
+<a name='use_learning_logging'></a>
+### Запуск с логированием
 
 `python train.py --logging=True`:
 
 - загружает данные и сохраняет их локально
 - обучает модель и сохраняет её локально
-- запускает логгирование с помощью mlflow
+- запускает логирование с помощью mlflow
 
 **Notes**:
 
@@ -66,13 +90,14 @@
   (скрипт будет искать `data/train_test/train.csv` и `data/train_test/test.csv`)
 - предполагается, что сервер запущен по адресу **http://128.0.1.1:8080**
 
-#### Запуск с логгированием по кастомному адресу mlflow
+<a name='use_learning_logging_custom'></a>
+### Запуск с логированием по кастомному адресу mlflow
 
 `python train.py --logging=True --host=host_address --port=port_address`:
 
 - загружает данные и сохраняет их локально
 - обучает модель и сохраняет её локально
-- запускает логгирование с помощью mlflow по адресу
+- запускает логирование с помощью mlflow по адресу
   **http://\*host_address\*:\*port_address\***
 
 **Notes**:
@@ -81,14 +106,16 @@
 
 ---
 
-### Использование: инференс
+<a name='use_infer'></a>
+## Использование: инференс
 
 Запуск предполагает, что в `data/train_test/` есть файлы `train.csv` и
 `test.csv`, а в `models/` есть файл `dt_clf.skops`. Если `python train.py` был
 успешно выполнен до запуска `python infer.py`, файлы с данными и моделью уже
 содержатся в соответствующих директориях
 
-#### Базовый сценария
+<a name='use_infer_base'></a>
+### Базовый сценарий
 
 `python infer.py`
 
@@ -98,8 +125,8 @@
   `genre_actual,genre_predicted`
 
 ---
-
-### Verbosity
+<a name='verbosity'></a>
+## Настройка verbosity
 
 `train.py` и `infer.py` запускаются по умолчанию в режиме verbose. Для изменения
 поведения необходимо выставить флаг `--verbose=False`. Пример:
