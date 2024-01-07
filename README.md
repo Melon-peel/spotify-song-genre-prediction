@@ -1,21 +1,22 @@
 # spotify-song-genre-prediction
 
-
 ## Навигация
 
-* [Описание проекта](#description)
-* [Установка](#installation)
-* [TL;DR](#tldr)
-* [Использование: обучение](#use_learning)
-  + [Базовый сценарий (без логирования)](#use_learning_base)
-  + [Запуск с логированием](#use_learning_logging)
-  + [Запуск с логированием по кастомному адресу mlflow](#use_learning_logging_custom)
-* [Использование: инференс](#use_infer)
-  + [Базовый сценарий](#use_infer_base)
-* [Настройка verbosity](#verbosity)
+- [Описание проекта](#description)
+- [Установка](#installation)
+- [TL;DR](#tldr)
+- [Использование: обучение](#use_learning)
+  - [Базовый сценарий (без логирования)](#use_learning_base)
+  - [Запуск с логированием](#use_learning_logging)
+  - [Запуск с логированием по кастомному адресу mlflow](#use_learning_logging_custom)
+- [Использование: инференс](#use_infer)
+  - [Базовый сценарий](#use_infer_base)
+- [Настройка verbosity](#verbosity)
 
 ---
+
 <a name='description'></a>
+
 ## Описание проекта
 
 Задача данного проекта - предсказание жанра трека, используя информацию о
@@ -24,8 +25,7 @@
 Аудио-фичи извлечены, используя Spotify API. Информация о жанрах извлечена из
 сервиса EveryNoise.
 
-**NOTE**:
-На данный момент качество модели отвратительное, в основном поскольку:
+**NOTE**: На данный момент качество модели отвратительное, в основном поскольку:
 
 - используемых признаков не хватает для адекватного предсказания (to be fixed)
 - при 23 используемых признаках, на каждый класс (жанр) из примерно 1300
@@ -34,6 +34,7 @@
 ---
 
 <a name='installation'></a>
+
 ## Установка
 
 - `git clone https://github.com/Melon-peel/spotify-song-genre-prediction.git`
@@ -46,24 +47,25 @@
 ---
 
 <a name='tldr'></a>
-## TL;DR 
+
+## TL;DR
 
 ### Для запуска без логирования:
 
-`python train.py` 
-`python infer.py`
+`python train.py` `python infer.py`
 
 ### Для запуска с логированием:
 
-`python train.py --logging=True` 
-`python infer.py`
+`python train.py --logging=True` `python infer.py`
 
 ---
 
 <a name='use_learning'></a>
+
 ## Использование: обучение
 
 <a name='use_learning_base'></a>
+
 ### Базовый сценарий (без логирования)
 
 `python train.py`:
@@ -76,6 +78,7 @@
 - для переобучения модели со своими данными используйте флаг `--search=local`
 
 <a name='use_learning_logging'></a>
+
 ### Запуск с логированием
 
 `python train.py --logging=True`:
@@ -91,6 +94,7 @@
 - предполагается, что сервер запущен по адресу **http://128.0.1.1:8080**
 
 <a name='use_learning_logging_custom'></a>
+
 ### Запуск с логированием по кастомному адресу mlflow
 
 `python train.py --logging=True --host=host_address --port=port_address`:
@@ -107,6 +111,7 @@
 ---
 
 <a name='use_infer'></a>
+
 ## Использование: инференс
 
 Запуск предполагает, что в `data/train_test/` есть файлы `train.csv` и
@@ -115,6 +120,7 @@
 содержатся в соответствующих директориях
 
 <a name='use_infer_base'></a>
+
 ### Базовый сценарий
 
 `python infer.py`
@@ -125,7 +131,9 @@
   `genre_actual,genre_predicted`
 
 ---
+
 <a name='verbosity'></a>
+
 ## Настройка verbosity
 
 `train.py` и `infer.py` запускаются по умолчанию в режиме verbose. Для изменения
