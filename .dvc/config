@@ -1,6 +1,10 @@
 [core]
     analytics = false
     remote = myremote
+[cache]
+    dir = cache
 ['remote "myremote"']
-    url = gdrive://1gCr3_qeFtMoozd9DnTT6QMwhcIiwENMO
+    url = gdrive://1O_VTRUQUWIbz5vboSFp0ICGA0SZ_cXoV
     gdrive_acknowledge_abuse = true
+    gdrive_use_service_account = true
+    gdrive_service_account_json_file_path = /home/kiri/Applications/DVC_keys/delivery-recommend-301395320783.json
