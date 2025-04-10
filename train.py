@@ -31,6 +31,11 @@ class BaseConfig:
 
 
 def resolve_data_location(search_location, verbose):
+    main_directory = pathlib.Path("data/train_test")
+
+    # Check if it exists, create if not
+    main_directory.mkdir(parents=True, exist_ok=True)
+
     data_dir = pathlib.Path("data/train_test/")
     if search_location == "local":
         if verbose:
